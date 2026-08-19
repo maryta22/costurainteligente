@@ -1,0 +1,18 @@
+{
+  /*
+   * Frontera de pureza del núcleo (L1) — ver §1 de docs/ARCHITECTURE.md.
+   *
+   * Este tsconfig compila EXCLUSIVAMENTE `src/core` y lo hace sin la librería
+   * `DOM` y sin tipos globales de Node/Vite. Consecuencia: `window`,
+   * `document`, `HTMLElement`, `process` o `crypto` no tipan dentro de `core`.
+   *
+   * La pureza deja de ser una convención y pasa a ser un error de compilación.
+   * Se verifica con `npm run check:core`.
+   */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": ["src/core"]
+}

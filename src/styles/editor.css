@@ -1,0 +1,767 @@
+/* ---------------------------------------------------------------- layout -- */
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.app__main {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  min-height: 0;
+}
+
+.app__main--split {
+  grid-template-columns: 1fr 1fr 320px;
+}
+
+.viewer3d {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border-left: 1px solid var(--chrome-border);
+}
+
+.viewer3d canvas {
+  display: block;
+}
+
+/* Informe de la malla, superpuesto sobre la escena. */
+.viewer3d__hud {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  background: rgb(15 18 21 / 78%);
+  color: #cfd6de;
+  font-size: 11px;
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  max-width: 320px;
+}
+
+.viewer3d__hud dl {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0 12px;
+  margin: 0;
+}
+
+.viewer3d__hud dt {
+  color: #8b96a3;
+}
+
+.viewer3d__hud dd {
+  margin: 0;
+  text-align: right;
+}
+
+.viewer3d__hud p {
+  margin: 6px 0 0;
+  color: #e0b055;
+}
+
+/* ------------------------------------------------------------- barra sup -- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 7px 12px;
+  background: var(--chrome-bg-raised);
+  border-bottom: 1px solid var(--chrome-border);
+  flex-wrap: wrap;
+}
+
+.toolbar__brand {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding-right: 6px;
+  border-right: 1px solid var(--chrome-border);
+}
+
+.toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: transparent;
+  border: 1px solid var(--chrome-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: #313841;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.btn--active {
+  background: var(--accent-strong);
+  border-color: var(--accent);
+}
+
+.btn--zoom {
+  min-width: 62px;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn__key {
+  font-size: 10px;
+  color: var(--chrome-text-dim);
+  border: 1px solid var(--chrome-border);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+
+.btn--active .btn__key {
+  color: #dbe8ff;
+  border-color: #6aa9ff;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--chrome-text-dim);
+}
+
+.field select {
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border);
+  border-radius: var(--radius);
+  padding: 4px 6px;
+}
+
+.field--check {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ---------------------------------------------------------------- editor -- */
+
+.editor2d {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  grid-template-rows: 24px 1fr;
+  min-width: 0;
+  min-height: 0;
+  background: var(--chrome-bg);
+}
+
+.editor2d__corner {
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  color: var(--chrome-text-dim);
+  background: var(--chrome-bg-raised);
+  border-right: 1px solid var(--chrome-border);
+  border-bottom: 1px solid var(--chrome-border);
+}
+
+.editor2d__ruler-top {
+  background: var(--chrome-bg-raised);
+  border-bottom: 1px solid var(--chrome-border);
+  overflow: hidden;
+}
+
+.editor2d__ruler-left {
+  background: var(--chrome-bg-raised);
+  border-right: 1px solid var(--chrome-border);
+  overflow: hidden;
+}
+
+.editor2d__canvas {
+  min-width: 0;
+  min-height: 0;
+}
+
+.canvas-host {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas {
+  display: block;
+  background: var(--canvas-bg);
+  user-select: none;
+}
+
+/* ---------------------------------------------------------------- reglas -- */
+
+.ruler {
+  display: block;
+}
+
+.ruler__tick {
+  stroke: #5c6672;
+  stroke-width: 1;
+}
+
+.ruler__tick--major {
+  stroke: #7d8794;
+}
+
+.ruler__label {
+  fill: var(--chrome-text-dim);
+  font-size: 9px;
+  font-family: var(--font-mono);
+}
+
+.ruler__cursor {
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+/* --------------------------------------------------------------- rejilla -- */
+
+.grid__minor {
+  stroke: var(--grid-minor);
+  stroke-width: 1;
+  fill: none;
+}
+
+.grid__major {
+  stroke: var(--grid-major);
+  stroke-width: 1;
+  fill: none;
+}
+
+.grid__axes {
+  stroke: var(--axis);
+  stroke-width: 1.4;
+  fill: none;
+}
+
+/* ---------------------------------------------------------------- boceto -- */
+
+.sketch__line {
+  fill: none;
+  stroke: var(--sketch-line);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.sketch__line--hover {
+  stroke: var(--hover);
+  stroke-width: 2.4;
+}
+
+.sketch__line--selected {
+  stroke: var(--selected);
+  stroke-width: 2.4;
+}
+
+.sketch__point {
+  fill: var(--sketch-point-fill);
+  stroke: var(--sketch-point-stroke);
+  stroke-width: 1.5;
+}
+
+.sketch__point--hover {
+  stroke: var(--hover);
+  stroke-width: 2;
+}
+
+.sketch__point--selected {
+  fill: var(--selected);
+  stroke: #ffffff;
+  stroke-width: 1.5;
+}
+
+/* ---------------------------------------------------------------- piezas -- */
+
+.piece__body {
+  fill: var(--piece-fill);
+  stroke: none;
+}
+
+/* Línea de CORTE: derivada del margen, se dibuja discontinua para
+   distinguirla de la línea de costura, que es la fuente. */
+.piece__cut {
+  fill: none;
+  stroke: var(--piece-cut);
+  stroke-width: 1.2;
+  stroke-dasharray: 7 4;
+}
+
+.piece__seam {
+  fill: none;
+  stroke: var(--piece-seam);
+  stroke-width: 1.8;
+}
+
+.piece__edge {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.piece__edge--hem { stroke: var(--edge-hem); }
+.piece__edge--side { stroke: var(--edge-side); }
+.piece__edge--armhole { stroke: var(--edge-armhole); }
+.piece__edge--shoulder { stroke: var(--edge-shoulder); }
+.piece__edge--neckline { stroke: var(--edge-neckline); }
+.piece__edge--dart { stroke: var(--edge-dart); }
+.piece__edge--other { stroke: var(--piece-seam); }
+
+/* Doblez: discontinua larga, el convenio de taller. */
+.piece__edge--fold {
+  stroke: var(--edge-fold);
+  stroke-dasharray: 14 5 3 5;
+}
+
+/* Nido de tallas: contexto tenue detrás de la pieza base. */
+.nest__outline {
+  fill: none;
+  stroke-width: 1;
+  opacity: 0.75;
+}
+
+.nest__size--xs .nest__outline { stroke: #7b3fb8; }
+.nest__size--s .nest__outline { stroke: #1a73e8; }
+.nest__size--m .nest__outline { stroke: #12805a; }
+.nest__size--l .nest__outline { stroke: #b4531f; }
+.nest__size--xl .nest__outline { stroke: #c4256b; }
+
+/* Manejadores del trazado paramétrico. */
+.handle {
+  fill: var(--canvas-bg);
+  stroke: var(--handle);
+  stroke-width: 1.4;
+  cursor: grab;
+}
+
+.handle--overridden {
+  fill: var(--hover);
+  stroke: var(--piece-seam);
+}
+
+.override {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.override__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.override__name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.override__delta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--hover);
+}
+
+.btn--small {
+  padding: 2px 7px;
+  font-size: 11px;
+}
+
+.notch__mark {
+  stroke: var(--notch);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Traza de la proyección de la costura al corte: muy tenue, es una ayuda de
+   verificación y no parte del patrón. */
+.notch__projection {
+  stroke: var(--notch);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  opacity: 0.45;
+  fill: none;
+}
+
+.grainline {
+  stroke: var(--grain);
+  stroke-width: 1.6;
+  fill: none;
+}
+
+.piece__label {
+  fill: var(--piece-seam);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* -------------------------------------------------------------- overlays -- */
+
+.overlay__marquee {
+  fill: rgb(26 115 232 / 10%);
+  stroke: var(--selected);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.overlay__rubber {
+  stroke: var(--accent);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 4;
+}
+
+.overlay__snap {
+  fill: none;
+  stroke: var(--snap);
+  stroke-width: 1.5;
+}
+
+.measure__label {
+  fill: #17324f;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  paint-order: stroke;
+  stroke: rgb(255 255 255 / 85%);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+/* ------------------------------------------------------- panel lateral --- */
+
+.sidepanel {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
+  background: var(--chrome-bg-raised);
+  border-left: 1px solid var(--chrome-border);
+}
+
+.sidepanel__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--chrome-border);
+}
+
+.sidepanel__tab {
+  flex: 1;
+  padding: 8px 6px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--chrome-text-dim);
+  cursor: pointer;
+}
+
+.sidepanel__tab:hover {
+  color: var(--chrome-text);
+}
+
+.sidepanel__tab--active {
+  color: var(--chrome-text);
+  border-bottom-color: var(--accent);
+}
+
+.sidepanel__body {
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.panel {
+  padding: 12px 14px;
+}
+
+.panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-bottom: 14px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--chrome-border);
+}
+
+.panel__section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.panel__heading {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chrome-text-dim);
+}
+
+.panel__hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--chrome-text-dim);
+}
+
+.field--stack {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.field--stack select {
+  width: 100%;
+}
+
+/* ------------------------------------------------------------ parámetros -- */
+
+.param {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 5%);
+}
+
+.param__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.param__label {
+  color: var(--chrome-text);
+}
+
+.param__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--snap);
+  white-space: nowrap;
+}
+
+.param--error .param__value {
+  color: #e0574f;
+}
+
+.param__input {
+  width: 100%;
+  padding: 3px 6px;
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.param__input:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.param--error .param__input {
+  border-color: #e0574f;
+}
+
+/* El cursor bajo el error sólo se alinea con fuente monoespaciada. */
+.param__issue {
+  margin: 2px 0 0;
+  padding: 5px 6px;
+  background: rgb(224 87 79 / 10%);
+  border-left: 2px solid #e0574f;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.35;
+  color: #f0a9a4;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.issues {
+  gap: 4px;
+}
+
+.issues__title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #d9a441;
+}
+
+.issues--error .issues__title {
+  color: #e0574f;
+}
+
+.issues__item {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--chrome-text-dim);
+}
+
+/* ------------------------------------------------------------- inspector -- */
+
+.inspector {
+  padding: 12px 14px;
+  overflow-y: auto;
+}
+
+.inspector__title {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chrome-text-dim);
+}
+
+.inspector__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inspector__kind {
+  margin: 0;
+  color: var(--chrome-text-dim);
+}
+
+.inspector__empty {
+  margin: 0 0 10px;
+  color: var(--chrome-text-dim);
+}
+
+.numfield {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.numfield__label {
+  color: var(--chrome-text-dim);
+  min-width: 26px;
+}
+
+.numfield__control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+}
+
+.numfield__control input {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 6px;
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.numfield__control input:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.numfield__suffix {
+  color: var(--chrome-text-dim);
+  min-width: 18px;
+}
+
+.readout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  margin: 0;
+}
+
+.readout dt {
+  color: var(--chrome-text-dim);
+}
+
+.readout dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+/* ------------------------------------------------------------ barra est. -- */
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 5px 12px;
+  background: var(--chrome-bg-raised);
+  border-top: 1px solid var(--chrome-border);
+  color: var(--chrome-text-dim);
+}
+
+.statusbar__hint {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusbar__spacer {
+  flex: 1;
+}
+
+.statusbar__item {
+  white-space: nowrap;
+}
+
+.statusbar__item--mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.statusbar__item--accent {
+  color: var(--snap);
+  font-weight: 600;
+}
+
+/* Leyenda del mapa de tensión. */
+.viewer3d__legend {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  background: rgb(15 18 21 / 78%);
+  color: #cfd6de;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.viewer3d__ramp {
+  width: 120px;
+  height: 9px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #3380f5, #9e9e9e, #fa4020);
+}
